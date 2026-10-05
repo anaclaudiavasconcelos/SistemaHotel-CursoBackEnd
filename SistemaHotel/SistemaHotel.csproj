@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="Controller\Interfaces\" />
     <Folder Include="Controller\Services\" />
+    <Folder Include="Model\Classes\Contextos\" />
     <Folder Include="Model\Classes\Enumeracoes\" />
     <Folder Include="Model\Classes\Interface\" />
     <Folder Include="Fotos\" />
