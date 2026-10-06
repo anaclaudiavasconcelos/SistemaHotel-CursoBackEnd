@@ -1,4 +1,6 @@
 ﻿
+using SistemaHotel.Model.Classes.Contextos;
+using SistemaHotel.Model.Classes.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,8 +33,8 @@ namespace SistemaHotel.Cadastros
 
         private void Listar()
         {
-            
-
+            var contexto = new ContextoCargo();
+            grid.DataSource = contexto.cargo.ToList();
 
             FormatarDG();
         }
@@ -58,6 +60,19 @@ namespace SistemaHotel.Cadastros
             }
 
             //PROGRAMANDO O BOTÃO SALVAR
+
+            var cargo = new Cargo(txtNome.Text);
+            var contexto = new ContextoCargo();
+            contexto.cargo.Add(cargo);
+            contexto.SaveChanges();
+
+            grid.DataSource = contexto.cargo.Select(x => new
+            {
+                x.Id,
+                x.NomeDoCargo
+            }).ToList();
+            grid.Columns[0].HeaderText = "Código";
+            grid.Columns[1].HeaderText = "Nome";
 
 
             MessageBox.Show("Registro Salvo com Sucesso", "Dados Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -87,7 +102,11 @@ namespace SistemaHotel.Cadastros
 
 
             //CÓDIGO DO BOTÃO PARA EDITAR
-            
+            var contexto = new ContextoCargo();
+            contexto.cargo.FirstOrDefault(x => x.Id.ToString() == id).NomeDoCargo = txtNome.Text;
+            contexto.SaveChanges();
+
+
 
 
             MessageBox.Show("Registro Editado com Sucesso!", "Dados Editados", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -105,7 +124,10 @@ namespace SistemaHotel.Cadastros
             if (resultado == DialogResult.Yes)
             {
                 //CÓDIGO DO BOTÃO PARA EXCLUIR
- 
+                var contexto = new ContextoCargo();
+                contexto.cargo.Remove(contexto.cargo.FirstOrDefault(x => x.Id.ToString() == id));
+                contexto.SaveChanges();
+
 
                 MessageBox.Show("Registro Excluido com Sucesso!", "Registro Excluido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 btnNovo.Enabled = true;

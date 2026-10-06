@@ -10,10 +10,10 @@ namespace SistemaHotel.Model.Classes.Entidades
         public string Nome { get; set; }
         public string Usuario { get; set; }
         public string Cargo { get; set; }
-        public int Senha { get; set; }
+        public string Senha { get; set; }
 
         //Construtor
-        public Pessoa(string nome, string usuario, string cargo, int senha)
+        public Pessoa(string nome, string usuario, string cargo, string senha)
         {
             Nome = nome;
             Usuario = usuario;

@@ -1,4 +1,6 @@
 ﻿
+using SistemaHotel.Model.Classes.Contextos;
+using SistemaHotel.Model.Classes.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +31,8 @@ namespace SistemaHotel.Cadastros
 
         private void Listar()
         {
-
+            var contexto = new ContextoServico();
+            grid.DataSource = contexto.servico.ToList();
 
 
             FormatarDG();
@@ -91,6 +94,22 @@ namespace SistemaHotel.Cadastros
 
             //CÓDIGO DO BOTÃO PARA SALVAR
 
+            var servico = new Servico(txtNome.Text, decimal.Parse(txtValor.Text));
+            var contexto = new ContextoServico();
+            contexto.servico.Add(servico);
+            contexto.SaveChanges();
+
+            grid.DataSource = contexto.servico.Select(x => new
+            {
+                x.Id,
+                x.NomeServico,
+                x.ValorServico
+            }).ToList();
+            grid.Columns[0].HeaderText = "Código";
+            grid.Columns[1].HeaderText = "Nome";
+            grid.Columns[2].HeaderText = "Valor";
+
+
 
             MessageBox.Show("Registro Salvo com Sucesso!", "Dados Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             btnNovo.Enabled = true;
@@ -127,6 +146,10 @@ namespace SistemaHotel.Cadastros
 
 
             //CÓDIGO DO BOTÃO PARA EDITAR
+            var contexto = new ContextoServico();
+            contexto.servico.FirstOrDefault(x => x.Id.ToString() == id).NomeServico = txtNome.Text;
+            contexto.servico.FirstOrDefault(x => x.Id.ToString() == id).ValorServico = decimal.Parse(txtValor.Text);
+            contexto.SaveChanges();
 
 
             MessageBox.Show("Registro Editado com Sucesso!", "Dados Editados", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -144,7 +167,11 @@ namespace SistemaHotel.Cadastros
             if (resultado == DialogResult.Yes)
             {
                 //CÓDIGO DO BOTÃO PARA EXCLUIR
-   
+                var contexto = new ContextoServico();
+                contexto.servico.Remove(contexto.servico.FirstOrDefault(x => x.Id.ToString() == id));
+                contexto.SaveChanges();
+
+
 
                 MessageBox.Show("Registro Excluido com Sucesso!", "Registro Excluido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 btnNovo.Enabled = true;

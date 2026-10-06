@@ -17,7 +17,7 @@ namespace SistemaHotel
         public static string nomeProduto;
         public static string estoqueProduto;
         public static string idProduto;
-        private static List<DbContext> listaContextos = new List<DbContext>();
+        //private static List<DbContext> listaContextos = new List<DbContext>();
 
         /// <summary>
         /// Ponto de entrada principal para o aplicativo.
@@ -27,15 +27,21 @@ namespace SistemaHotel
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+            //Application.Run(new FrmMenu());
+            Application.Run(new FrmLogin());
 
-            
-            listaContextos.Add(new ContextoFornecedor());
+
+            /*listaContextos.Add(new ContextoFornecedor());
             listaContextos.Add(new ContextoPessoa());
+            listaContextos.Add(new ContextoCargo());
+            listaContextos.Add(new ContextoFuncionario());
+            listaContextos.Add(new ContextoServico());
+
 
             foreach (var item in listaContextos)
             {
                 item.Database.EnsureCreated();
+                MessageBox.Show($"Banco de dados {item.GetType().Name} criado com sucesso!");
             }
 
 
@@ -76,6 +82,9 @@ namespace SistemaHotel
                 MessageBox.Show($"Erro: {e.Message} ");
                 return false;
             }
+        }*/
         }
     }
 }
+        
+    

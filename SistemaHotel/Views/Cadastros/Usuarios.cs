@@ -1,4 +1,6 @@
 ﻿
+using SistemaHotel.Model.Classes.Contextos;
+using SistemaHotel.Model.Classes.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,7 +40,8 @@ namespace SistemaHotel.Cadastros
 
         private void Listar()
         {
-
+            var contexto = new ContextoPessoa();
+            grid.DataSource = contexto.pessoa.ToList();
 
 
             FormatarDG();
@@ -50,7 +53,16 @@ namespace SistemaHotel.Cadastros
 
         private void BuscarNome()
         {
-
+            ContextoPessoa contexto = new ContextoPessoa();
+            var lista = contexto.pessoa.ToList();
+            if (txtBuscarNome.Text != "")
+            {
+                grid.DataSource = lista.Where(x => x.Nome.Contains(txtBuscarNome.Text)).ToList();
+            }
+            else
+            {
+                grid.DataSource = lista;
+            }
 
             FormatarDG();
         }
@@ -120,11 +132,26 @@ namespace SistemaHotel.Cadastros
                 return;
             }
 
-          
+
 
 
             //CÓDIGO DO BOTÃO PARA SALVAR
-  
+            var pessoa = new Pessoa(txtNome.Text, txtUsuario.Text, cbCargo.Text, txtSenha.Text);
+            var contexto = new ContextoPessoa();
+            contexto.pessoa.Add(pessoa);
+            contexto.SaveChanges();
+
+            grid.DataSource = contexto.pessoa.Select(x => new
+            {
+                x.Id,
+                x.Nome,
+                x.Usuario,
+                x.Senha
+            }).ToList();
+            grid.Columns[0].HeaderText = "Código";
+            grid.Columns[1].HeaderText = "Nome";
+            grid.Columns[2].HeaderText = "Usuário";
+            grid.Columns[3].HeaderText = "Senha";
 
             //VERIFICAR SE O NOME DE USUÁRIO JÁ EXISTE NO BANCO
 
@@ -157,12 +184,16 @@ namespace SistemaHotel.Cadastros
                 return;
             }
 
-           
+
 
 
             //CÓDIGO DO BOTÃO PARA EDITAR
 
-
+            var contexto = new ContextoPessoa();
+            contexto.pessoa.FirstOrDefault(x => x.Id.ToString() == id).Nome = txtNome.Text;
+            contexto.pessoa.FirstOrDefault(x => x.Id.ToString() == id).Usuario = txtUsuario.Text;
+            contexto.pessoa.FirstOrDefault(x => x.Id.ToString() == id).Senha = txtSenha.Text;
+            contexto.SaveChanges();
 
 
             //VERIFICAR SE O USUARIO JÁ EXISTE NO BANCO

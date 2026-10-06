@@ -1,20 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using SistemaHotel.Model.Classes.Entidades;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SistemaHotel.Model.Classes.Contextos
 {
-    internal class ContextoFornecedor : DbContext
+    internal class ContextoFuncionario : DbContext
     {
         //Propriedade
-        public DbSet<Fornecedor> fornecedor { get; set; }
-
+        public DbSet<Funcionario> funcionario { get; set; }
 
         //Métodos
         protected override void OnConfiguring(DbContextOptionsBuilder opcoesDeConstrucao)
         {
-
             string caminho = Environment.GetEnvironmentVariable("db1");
             opcoesDeConstrucao.UseSqlServer(caminho);
         }
@@ -22,7 +21,7 @@ namespace SistemaHotel.Model.Classes.Contextos
 
         protected override void OnModelCreating(ModelBuilder modeloDeConstrucao)
         {
-            modeloDeConstrucao.Entity<Fornecedor>(entidade =>
+            modeloDeConstrucao.Entity<Funcionario>(entidade =>
             {
                 entidade.HasKey(e => e.Id);
 
@@ -32,12 +31,14 @@ namespace SistemaHotel.Model.Classes.Contextos
 
                 entidade.Property(e => e.Telefone);
 
+                entidade.Property(e => e.Cpf);
+
+                entidade.Property(e => e.Cargo);
 
             }
 
         );
+
         }
-
-
     }
 }
